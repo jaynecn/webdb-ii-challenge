@@ -5,9 +5,9 @@ const db = require('../data/dbConfig');
 const router = express.Router();
 
 router.get('/', (req, res) => {
-  db('cars')
+  db('showroomCars')
     .then(result => {
-      res.json({ message: 'You have made contact with the cars api'})
+      res.json(result)
     })
     .catch(error => {
       res.status(500).json({ message: 'Error message: ' + error.message });
@@ -15,46 +15,24 @@ router.get('/', (req, res) => {
 });
 
 
-// router.get('/:id', (req, res) => {
-//   // SELECT * FROM posts WHERE id = id;
-//   db('accounts').where({ id: req.params.id })
-//     .then(result => {
-//       res.json(result[0])
-//     })
-//     .catch(error => {
-//       res.status(500).json({ message: 'Error message: ' + error.message });
-//     })
-// });
+router.post('/', (req, res) => {
+  // SELECT * FROM posts WHERE id = id;
+  db('showroomCars')
+  .insert({
+    VIN: req.body.VIN, 
+    Make: req.body.Make, 
+    Model: req.body.Model,
+    Mileage: req.body.Mileage,
+    TransmissionType: req.body.TransmissionType,
+    Status: req.body.Status
+   })
+    .then(result => {
+      res.json({ message:  'Car created with id number ' + result});
+    })
+    .catch(error => {
+      res.status(500).json({ message: 'Error message: ' + error.message });
+    })
+});
 
-// router.post('/', (req, res) => {
-//   // SELECT * FROM posts WHERE id = id;
-//   db('accounts').insert({ name: req.body.name, budget: req.body.budget })
-//     .then(result => {
-//       res.json({ message:  'Account created with id number ' + result});
-//     })
-//     .catch(error => {
-//       res.status(500).json({ message: 'Error message: ' + error.message });
-//     })
-// });
-
-// router.put('/:id', (req, res) => {
-//   db('accounts').where({ id: req.params.id }).update({ name: req.body.name, budget: req.body.budget})
-//     .then(result => {
-//       res.json(`Account number ${req.params.id} updated`);
-//     })
-//     .catch(error => {
-//       res.status(500).json({ message: 'Error message: ' + error.message });
-//     })
-// })
-
-// router.delete('/:id', (req, res) => {
-//   db('accounts').where({ id: req.params.id}).del()
-//     .then(result => {
-//       res.json(`Account number ${req.params.id} deleted`);
-//     })
-//     .catch(error => {
-//       res.status(500).json({ message: 'Error message: ' + error.message });
-//     })
-// })
 
 module.exports = router;
